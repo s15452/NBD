@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+X-Riak-Vclock: a85hYGBgzGDKBVI8+xkWvl9x7IUVRCiRMY+VIa/V6hZfFgA=
+Vary: Accept-Encoding
+Server: MochiWeb/1.1 WebMachine/1.10.9 (cafe not found)
+Link: </buckets/s15452>; rel="up"
+Last-Modified: Sun, 13 Jun 2021 13:34:38 GMT
+ETag: "mOcHqoqcIwZEqQPP4jk43"
+Date: Sun, 13 Jun 2021 13:37:54 GMT
+Content-Type: application/json
+Content-Length: 92
+
+{'team': 'Mercedes-AMG Petronas Formula One Team', 'driver': 'Lewis Hamilton', 'number': 44}

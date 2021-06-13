@@ -1,0 +1,13 @@
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Dodanie ojektu
+Pobranie obiektu
+{'team': 'McLaren F1 Team', 'driver': 'Lando Norris', 'number': 4}
+Aktualizacja obiektu
+Pobranie zaktualizowanego obiektu
+{'team': 'McLaren F1 Team', 'driver': 'Lando Norris', 'number': 4, 'starts': 44}
+Usunięcie obiektu
+Pobranie usuniętego obiektu
+Exception in thread "main" java.lang.NullPointerException
+	at Main.main(Main.java:69)

@@ -1,0 +1,21 @@
+HTTP/1.1 200 OK
+Vary: Accept-Encoding
+Server: MochiWeb/1.1 WebMachine/1.10.9 (cafe not found)
+Date: Sun, 13 Jun 2021 13:47:13 GMT
+Content-Type: application/json
+Content-Length: 80
+
+{"keys":["driver3","driver1","driver5","Y2NM1cvGRGeCprUKRHGWsvlEWfi","driver4"]}
+
+HTTP/1.1 200 OK
+X-Riak-Vclock: a85hYGBgzGDKBVI8+xkWvl9x7NU+iFAiYx4rg3qH1S2+LAA=
+Vary: Accept-Encoding
+Server: MochiWeb/1.1 WebMachine/1.10.9 (cafe not found)
+Link: </buckets/s15452>; rel="up"
+Last-Modified: Sun, 13 Jun 2021 13:46:15 GMT
+ETag: "24jY0mkVDpqFmkJIL069fH"
+Date: Sun, 13 Jun 2021 13:47:58 GMT
+Content-Type: application/json
+Content-Length: 43
+
+{'team': 'Scuderia Ferrari Mission Winnow'}

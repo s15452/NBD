@@ -1,0 +1,43 @@
+1.	Umieść w bazie (nazwa bucketa ma być Twoim numerem indeksu poprzedzonym literą „s”) 5 wartości, gdzie każda z nich ma być dokumentem json mającym 4 pola co najmniej dwóch różnych typów. 
+
+curl -XPOST -i -H "Content-Type: application/json" -d "{'team': 'Mercedes-AMG Petronas Formula One Team', 'driver': 'Lewis Hamilton', 'number': 44}" http://localhost:8098/buckets/s15452/keys/driver1
+curl -XPOST -i -H "Content-Type: application/json" -d "{'team': 'Scuderia Ferrari Mission Winnow', 'driver': 'Charles Leclerc', 'number': 16}" http://localhost:8098/buckets/s15452/keys/driver2
+curl -XPOST -i -H "Content-Type: application/json" -d "{'team': 'Red Bull Racing', 'driver': 'Max Verstappen', 'number': 33}" http://localhost:8098/buckets/s15452/keys/driver3
+curl -XPOST -i -H "Content-Type: application/json" -d "{'team': 'Alfa Romeo Racing ORLEN', 'driver': 'Kimi Räikkönen', 'number': 7}" http://localhost:8098/buckets/s15452/keys/driver4
+curl -XPOST -i -H "Content-Type: application/json" -d "{'team': 'McLaren F1 Team', 'driver': 'Lando Norris', 'number': 4}" http://localhost:8098/buckets/s15452/keys/driver5
+
+2.	Pobierz z bazy jedną z dodanych przez Ciebie wartości. 
+
+curl -i http://localhost:8098/buckets/s15452/keys/driver1
+
+3.	Zmodyfikuj jedną z wartości – dodając dodatkowe pole do dokumentu. 
+
+curl -XPUT -i -H "Content-Type: application/json" -d "{'team': 'Alfa Romeo Racing ORLEN', 'driver': 'Kimi Räikkönen', 'number': 7, 'starts': 335}" http://localhost:8098/buckets/s15452/keys/driver4
+
+4.	Zmodyfikuj jedną z wartości – usuwając jedną pole z wybranego dokumentu. 
+
+curl -XPUT -i -H "Content-Type: application/json" -d "{'team': 'McLaren F1 Team', 'driver': 'Lando Norris'}" http://localhost:8098/buckets/s15452/keys/driver5
+
+5.	Zmodyfikuj jedną z wartości – zmieniając wartość jednego z pól.  
+
+curl -XPUT -i -H "Content-Type: application/json" -d "{'team': 'Alfa Romeo Racing ORLEN', 'driver': 'Kimi Räikkönen', 'number': 7, 'starts': 336}" http://localhost:8098/buckets/s15452/keys/driver4
+
+6.	Usuń jeden z dokumentów z bazy. 
+
+curl -XDELETE -i http://localhost:8098/buckets/s15452/keys/driver2
+
+7.	Spróbuj pobrać z bazy wartość, która nie istnieje w tej bazie. 
+
+curl -i http://localhost:8098/buckets/s15452/keys/driver2
+
+8.	Dodaj do bazy 1 dokument json (zawierający 1 pole), ale nie specyfikuj klucza. 
+
+curl -XPOST -i -H "Content-Type: application/json" -d "{'team': 'Scuderia Ferrari Mission Winnow'}" http://localhost:8098/buckets/s15452/keys/
+
+9.	Pobierz z bazy element z zadania 8. 
+curl -i http://localhost:8098/buckets/s15452/keys?keys=true
+curl -i http://localhost:8098/buckets/s15452/keys/Y2NM1cvGRGeCprUKRHGWsvlEWfi
+
+10.	Usuń z bazy element z zadania 8. 
+
+curl -XDELETE -i http://localhost:8098/buckets/s15452/keys/Y2NM1cvGRGeCprUKRHGWsvlEWfi
