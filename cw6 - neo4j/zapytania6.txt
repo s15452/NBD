@@ -1,0 +1,100 @@
+Część 1 – Wycieczki górskie
+
+    1.	Znajdź trasy którymi można dostać się z Darjeeling na Sandakphu, mające najmniejszą ilość etapów 
+
+        MATCH p=shortestPath((d {name:"Darjeeling"})-[*]-(s {name:"Sandakphu"}))
+        RETURN p
+
+    2.	Znajdź mające najmniej etapów trasy którymi można dostać się z Darjeeling na Sandakphu i które mogą być wykorzystywane zimą 
+
+        MATCH p=shortestPath((d {name:"Darjeeling"})-[*]-(s {name:"Sandakphu"}))
+        WHERE all(r IN relationships(p) WHERE r.winter="true")
+        RETURN p
+
+    3.	Uszereguj trasy którymi można dostać się z Darjeeling na Sandakphu według dystansu Znajdź wszystkie miejsca do których można dotrzeć przy pomocy roweru (twowheeler) z Darjeeling latem
+
+        MATCH p = (d {name:"Darjeeling"})-[*]->(s {name:"Sandakphu"})
+        WHERE all(r IN relationships(p) WHERE r.summer="true" AND r.type = "twowheeler" AND type(r) = "twowheeler")
+        RETURN p, REDUCE(distance=0, r IN relationships(p) | distance + r.distance) AS totalDistance
+        ORDER BY totalDistance ASC
+
+        (Brak wyników)
+
+Część 2 – Połączenia lotnicze
+
+    4.	Uszereguj porty lotnicze według ilości rozpoczynających się w nich lotów
+
+        MATCH (f:Flight)-[o:ORIGIN]->(a:Airport)
+        WITH a AS airport, count(f) AS flights
+        RETURN airport, flights
+        ORDER BY flights DESC
+
+    5.	Znajdź wszystkie porty lotnicze, do których da się dolecieć (bezpośrednio lub z przesiadkami) z Los Angeles (LAX) wydając mniej niż 3000 
+
+        Utworzenie pomocniczych relacji opisujących rodzaj lotu (wykorzystywane również w pozostałych zadaniach):
+
+        MATCH (o:Airport)<-[:ORIGIN]-(flight:Flight)-[:DESTINATION]->(d:Airport), 
+        (flight)<-[:ASSIGN]-(ticket:Ticket)
+        WITH o, flight, ticket, d
+        CREATE (o)-[directFlight:DIRECT_FLIGHT {airline: flight.airline, price: ticket.price, class:ticket.class, date: flight.date, duration: flight.duration, distance: flight.distance}]->(d)
+        RETURN directFlight;
+
+        MATCH p =(o:Airport {name:"LAX"})-[:DIRECT_FLIGHT*..4]->(d:Airport)
+        WITH p, d, REDUCE(
+            cost = 0,
+            flight IN relationships(p) | cost + flight.price
+        ) as cost
+        WHERE cost<3000
+        RETURN d, MIN(cost)
+
+    6.	Uszereguj połączenia, którymi można dotrzeć z Los Angeles (LAX) do Dayton (DAY) według ceny biletów 
+
+        MATCH p =(o:Airport {name:"LAX"})-[:DIRECT_FLIGHT*..4]->(d:Airport {name:"DAY"})
+        RETURN p, REDUCE(
+                    cost = 0,
+                    flight IN relationships(p) | cost + flight.price
+                ) as cost
+        ORDER BY cost
+
+        (Brak wyników)
+
+    7.	Znajdź najtańsze połączenie z Los Angeles (LAX) do Dayton (DAY) 
+
+        MATCH p =(o:Airport {name:"LAX"})-[:DIRECT_FLIGHT*..4]->(d:Airport {name:"DAY"})
+        RETURN p, REDUCE(
+            cost = 0,
+            flight IN relationships(p) | cost + flight.price
+        ) as cost
+        ORDER BY cost ASC
+        LIMIT 1
+
+        (Brak wyników)
+
+    8.	Znajdź najtańsze połączenie z Los Angeles (LAX) do Dayton (DAY) w klasie biznes 
+
+        MATCH p =(o:Airport {name:"LAX"})-[r:DIRECT_FLIGHT*..4]->(d:Airport {name:"DAY"})
+        WHERE all(r IN relationships(p) WHERE r.class="business")
+        RETURN p, REDUCE(
+            cost = 0,
+            flight IN relationships(p) | cost + flight.price
+        ) as cost
+        ORDER BY cost ASC
+        LIMIT 1
+
+        (Brak wyników)
+
+    9.	Uszereguj linie lotnicze według ilości miast, pomiędzy którymi oferują połączenia (unikalnych miast biorących udział w relacjach :ORIGIN i :DESTINATION węzłów typu Flight obsługiwanych przez daną linię) 
+
+        MATCH (n:Flight)-[r:ORIGIN|DESTINATION]->(a:Airport)
+        RETURN n.airline as airline, count(distinct(a)) as aitports
+
+    10.	Znajdź najtańszą trasę łączącą 3 różne porty lotnicze
+
+        MATCH p =(a1:Airport)-[:DIRECT_FLIGHT]->(a2:Airport)-[:DIRECT_FLIGHT]->(a3:Airport)
+        WHERE a1.name <> a2.name AND a2.name <> a3.name AND a1.name <> a3.name
+        RETURN p, MIN(REDUCE(
+                    cost = 0,
+                    flight IN relationships(p) | cost + flight.price
+                )) as cost
+        ORDER BY cost
+        LIMIT 1
